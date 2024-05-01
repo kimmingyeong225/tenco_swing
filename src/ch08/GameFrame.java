@@ -25,6 +25,7 @@ public class GameFrame extends JFrame {
 	int enemyX = 250;
 	int enemyY = 420;
 	
+	boolean isStart = true;
 	
 	public GameFrame() {
 		initData();
@@ -57,7 +58,7 @@ public class GameFrame extends JFrame {
 			// false : 오른쪽으로 가능 상황
 			boolean direction = true;
 			
-			while(true) {
+			while(isStart) {
 				System.out.println("진행중");
 				
 				if(direction) {
@@ -150,12 +151,17 @@ public class GameFrame extends JFrame {
 					playerX += 10;
 				}else if (code == KeyEvent.VK_SPACE) {
 					// 1. 스페이스를 눌렀을 때 적군을 멈출 수 있도록 코드 수정
-						boolean StartElement = false;
+						// false;
+					isStart = false;
 				}
 				
 				
 				// 2. player 가 적군과 만났다면 player 그림을 없애주세요 
-				//if
+				if(playerX == enemyX) {
+					player1 = null;
+					}else if (playerY == enemyY) {
+						player1 = null;
+					}
 				
 				repaint();
 				
