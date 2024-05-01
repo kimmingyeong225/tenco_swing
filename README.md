@@ -1,1 +1,1 @@
-tenco_java
+tenco_swing
