@@ -3,6 +3,9 @@ package Bubble.ex03;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import lombok.Getter;
+
+
 public class Player extends JLabel implements Moveable {
 
 	private int x;
