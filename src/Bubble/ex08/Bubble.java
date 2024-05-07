@@ -1,4 +1,4 @@
-package Bubble.ex07;
+package Bubble.ex08;
 
 import javax.naming.Context;
 import javax.swing.ImageIcon;
@@ -6,7 +6,9 @@ import javax.swing.JLabel;
 
 public class Bubble extends JLabel implements Moveable {
 
+	// 의존성 컴포지션 관계
 	private Player player;
+	private BackgrundBubbleService backgrundBubbleService;
 
 	private int x;
 	private int y;
@@ -122,6 +124,8 @@ public class Bubble extends JLabel implements Moveable {
 		bubble = new ImageIcon("img/bubble.png");
 		bubbled = new ImageIcon("img/bubbled.png");
 		bomb = new ImageIcon("img/bomb.png");
+		backgrundBubbleService = new BackgrundBubbleService(this); // 초기화
+		
 		
 
 		left = false;
@@ -169,6 +173,12 @@ public class Bubble extends JLabel implements Moveable {
 		for (int i = 0; i < 400; i++) {
 			x--;
 			setLocation(x, y);
+			
+			// 만약 왼쪽벽 --> up() // 버블팡! up!
+			if(backgrundBubbleService.leftWall()) {
+				break; // 하나의 반복문을 멈출 때 break 사용
+			}
+			
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
@@ -186,6 +196,9 @@ public class Bubble extends JLabel implements Moveable {
 		for (int i = 0; i < 400; i++) {
 			x++;
 			setLocation(x, y);
+			if(backgrundBubbleService.rightWall()) {
+				break;
+			}
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
@@ -206,6 +219,9 @@ public class Bubble extends JLabel implements Moveable {
 		while (true) {
 			y--;
 			setLocation(x, y);
+			if(backgrundBubbleService.topWall()) {
+				break;
+			}
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
@@ -217,26 +233,6 @@ public class Bubble extends JLabel implements Moveable {
 	public void a() {
 		this.setIcon(bomb);
 	}
-//	public void pop() {
-//		while (true) {
-//			setIcon(bomb);
-//			setLocation(x, y);
-//			try {
-//				Thread.sleep(4000); // 4초
-//				player.remove(this);
-//				player.repaint();
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	}
 
-//	public boolean isTopWallCrash() {
-//		return topWallCrash;
-//	}
-//
-//	public void setTopWallCrash(boolean topWallCrash) {
-//		this.topWallCrash = topWallCrash;
-//	}
 
 }
