@@ -1,10 +1,13 @@
-package Bubble.ex08;
+package Bubble.ex09;
 
 import javax.naming.Context;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class Bubble extends JLabel implements Moveable {
+	
+	private BubbleFrame mContext;
+	
 
 	// 의존성 컴포지션 관계
 	private Player player;
@@ -26,14 +29,12 @@ public class Bubble extends JLabel implements Moveable {
 	private ImageIcon bomb;// 물방울 팡!
 
 	// 연관관계, 의존성 컴포지션 관계, 생성자 의존 (DI)
-	public Bubble(Player player) {
-		this.player = player;
+	public Bubble(BubbleFrame mContext) {
+		this.mContext = mContext;
+		this.player = mContext.getPlayer();
 		
 		initData();
 		setInitLayout();
-
-		// 객체 생성 시 무조건 스레드 시작
-		initThread();
 	}
 
 
@@ -146,25 +147,6 @@ public class Bubble extends JLabel implements Moveable {
 		
 	}
 
-	// 공통으로 사용하는 부분을 메서드로 만들어 보자.
-	// 이 메서드는 내부에서만 사용할 예정
-	private void initThread() {
-		// 버블은 스레드가 하나면 된다.
-		// 익명 클래스
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-
-				if (player.playerWay == PlayerWay.LEFT) {
-					left();
-				} else {
-					right();
-				}
-
-			}
-		}).start();
-	}
 
 	@Override
 	public void left() {
@@ -227,8 +209,34 @@ public class Bubble extends JLabel implements Moveable {
 				e.printStackTrace();
 			}
 		}
+		clearBubble();
 	}
 	
+	// 외부 호출 안될 메서드
+	private void clearBubble() {
+		//3초 뒤에 터짐
+		try {
+			Thread.sleep(3000);
+			setIcon(bomb);
+			// 메모리에서 해제 처리 해야 함
+			
+			
+			Thread.sleep(500);
+			// 컴포넌트 제거 --> 다시 그림을 그리지 않는다
+			setIcon(null);
+			//mContext.remove(this); 
+			//mContext.repaint();
+			
+			//JFrame 안에 remove 메서드가 있다
+			
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+//	public void a() {
+//		this.setIcon(bomb);
+//	}
 
 
 }
